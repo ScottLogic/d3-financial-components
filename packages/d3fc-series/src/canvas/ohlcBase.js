@@ -16,13 +16,23 @@ export default (pathGenerator) => {
             const values = base.values(d, i);
             context.translate(values.cross, values.high);
             context.beginPath();
-
-            pathGenerator.x(0)
-                .open(() => values.open - values.high)
-                .width(values.width)
-                .high(0)
-                .low(() => values.low - values.high)
-                .close(() => values.close - values.high)([d]);
+            if (pathGenerator.ohlcShape) {
+                pathGenerator.x(0)
+                    .open(() => values.open - values.high)
+                    .width(values.width)
+                    .ohlcShape(values.ohlcBarShape)
+                    .high(0)
+                    .low(() => values.low - values.high)
+                    .close(() => values.close - values.high)([d]);
+            }
+            else {
+                pathGenerator.x(0)
+                    .open(() => values.open - values.high)
+                    .width(values.width)
+                    .high(0)
+                    .low(() => values.low - values.high)
+                    .close(() => values.close - values.high)([d]);
+            }
 
             const color = values.direction === 'up' ? colors.green : colors.red;
             context.strokeStyle = color;

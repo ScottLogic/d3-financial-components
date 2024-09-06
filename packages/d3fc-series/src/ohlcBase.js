@@ -13,6 +13,7 @@ export default () => {
     let lowValue = (d) => d.low;
     let closeValue = (d) => d.close;
     let bandwidth = () => 5;
+    let ohlcShape = () => 'line';
     let align = 'center';
     let crossValueScaled = (d, i) => base.xScale()(crossValue(d, i));
 
@@ -34,6 +35,7 @@ export default () => {
         const openRaw = openValue(d, i);
         const width = bandwidth(d, i);
         const offset = alignOffset(align, width);
+        const ohlcBarShape = ohlcShape(ohlcShape)
 
         let direction = '';
         if (closeRaw > openRaw) {
@@ -49,7 +51,8 @@ export default () => {
             low: base.yScale()(lowValue(d, i)),
             close: base.yScale()(closeRaw),
             width,
-            direction
+            direction,
+            ohlcBarShape
         };
     };
 
@@ -107,6 +110,13 @@ export default () => {
             return align;
         }
         align = args[0];
+        return base;
+    };
+    base.ohlcShape = (...args) => {
+        if (!args.length) {
+            return ohlcShape;
+        }
+        ohlcShape = functor(args[0]);
         return base;
     };
 

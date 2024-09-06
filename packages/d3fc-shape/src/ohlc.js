@@ -7,43 +7,56 @@ import functor from './functor';
 export default () => {
 
     let context = null;
-    let x       = (d) => d.date;
-    let open    = (d) => d.open;
-    let high    = (d) => d.high;
-    let low     = (d) => d.low;
-    let close   = (d) => d.close;
-    let orient  = 'vertical';
-    let width   = functor(3);
+    let x = (d) => d.date;
+    let open = (d) => d.open;
+    let high = (d) => d.high;
+    let low = (d) => d.low;
+    let close = (d) => d.close;
+    let orient = 'vertical';
+    let width = functor(3);
+    let ohlcShape = functor('line')
 
-    const ohlc = function(data) {
+    const ohlc = function (data) {
 
         const drawingContext = context || path();
 
-        data.forEach(function(d, i) {
-            const xValue      = x(d, i);
-            const yOpen       = open(d, i);
-            const yHigh       = high(d, i);
-            const yLow        = low(d, i);
-            const yClose      = close(d, i);
-            const halfWidth   = width(d, i) / 2;
+        data.forEach(function (d, i) {
+            const xValue = x(d, i);
+            const yOpen = open(d, i);
+            const yHigh = high(d, i);
+            const yLow = low(d, i);
+            const yClose = close(d, i);
+            const barWidth = width(d, i);
+            const halfBarWidth = barWidth / 2;
+            const halfWidth = barWidth * 2;
+            const ohlcBarShape = ohlcShape(d, i);
 
-            if (orient === 'vertical') {
-                drawingContext.moveTo(xValue, yLow);
-                drawingContext.lineTo(xValue, yHigh);
-
+            if (ohlcBarShape === 'bar') {
+                drawingContext.rect(xValue - halfBarWidth, yHigh, barWidth, yLow - yHigh);
                 drawingContext.moveTo(xValue, yOpen);
                 drawingContext.lineTo(xValue - halfWidth, yOpen);
                 drawingContext.moveTo(xValue, yClose);
                 drawingContext.lineTo(xValue + halfWidth, yClose);
-            } else {
-                drawingContext.moveTo(yLow, xValue);
-                drawingContext.lineTo(yHigh, xValue);
-
-                drawingContext.moveTo(yOpen, xValue);
-                drawingContext.lineTo(yOpen, xValue + halfWidth);
-                drawingContext.moveTo(yClose, xValue);
-                drawingContext.lineTo(yClose, xValue - halfWidth);
             }
+            else {
+                if (orient === 'vertical') {
+                    drawingContext.moveTo(xValue, yLow);
+                    drawingContext.lineTo(xValue, yHigh);
+                    drawingContext.moveTo(xValue, yOpen);
+                    drawingContext.lineTo(xValue - halfWidth, yOpen);
+                    drawingContext.moveTo(xValue, yClose);
+                    drawingContext.lineTo(xValue + halfWidth, yClose);
+                }
+                else {
+                    drawingContext.moveTo(yLow, xValue);
+                    drawingContext.lineTo(yHigh, xValue);
+                    drawingContext.moveTo(yOpen, xValue);
+                    drawingContext.lineTo(yOpen, xValue + halfWidth);
+                    drawingContext.moveTo(yClose, xValue);
+                    drawingContext.lineTo(yClose, xValue - halfWidth);
+                }
+            }
+
         });
 
         return context ? null : drawingContext.toString();
@@ -103,6 +116,13 @@ export default () => {
             return orient;
         }
         orient = args[0];
+        return ohlc;
+    };
+    ohlc.ohlcShape = (...args) => {
+        if (!args.length) {
+            return ohlcShape;
+        }
+        ohlcShape = functor(args[0]);
         return ohlc;
     };
 
