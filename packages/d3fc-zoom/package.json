@@ -2,8 +2,12 @@
     "name": "@d3fc/d3fc-zoom",
     "version": "1.2.0",
     "description": "A zoom component which operates in domain values",
+    "type": "module",
     "main": "build/d3fc-zoom.js",
-    "module": "index",
+    "exports": {
+        "import": "./build/d3fc-zoom.mjs",
+        "require": "./build/d3fc-zoom.js"
+    },
     "scripts": {
         "bundle": "npx rollup -c ../../scripts/rollup.config.js",
         "start": "npm start  --prefix ../d3fc -- --configPkg=d3fc-zoom"

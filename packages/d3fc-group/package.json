@@ -11,8 +11,12 @@
     "d3fc"
   ],
   "homepage": "https://github.com/d3fc/d3fc",
+  "type": "module",
   "main": "build/d3fc-group.js",
-  "module": "index",
+  "exports": {
+      "import": "./build/d3fc-group.mjs",
+      "require": "./build/d3fc-group.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/d3fc/d3fc"
