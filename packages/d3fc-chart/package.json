@@ -10,8 +10,12 @@
         "cartesian"
     ],
     "homepage": "https://github.com/d3fc/d3fc",
+    "type": "module",
     "main": "build/d3fc-chart.js",
-    "module": "index",
+    "exports": {
+        "import": "./build/d3fc-chart.mjs",
+        "require": "./build/d3fc-chart.js"
+    },
     "repository": {
         "type": "git",
         "url": "https://github.com/d3fc/d3fc"

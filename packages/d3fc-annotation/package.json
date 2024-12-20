@@ -10,7 +10,12 @@
         "crosshair"
     ],
     "homepage": "https://github.com/d3fc/d3fc",
+    "type": "module",
     "main": "build/d3fc-annotation.js",
+    "exports": {
+        "import": "./build/d3fc-annotation.mjs",
+        "require": "./build/d3fc-annotation.js"
+    },
     "module": "index",
     "repository": {
         "type": "git",

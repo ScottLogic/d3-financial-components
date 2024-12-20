@@ -32,6 +32,7 @@ export default commandLineArgs => {
 
     process.env.env = commandLineArgs.configEnv || 'dev';
     const shouldMinify = process.env.env === 'prod';
+    const formats = process.env.BUILD !== undefined ? ['umd'] : ['umd', 'es'];
 
     const _plugins = [
         babel({ cwd: '../..' }),
@@ -56,14 +57,14 @@ export default commandLineArgs => {
         })
     ]);
 
-    return {
+    return formats.map((format) => ({
         input: 'index.js',
         plugins: devMode ? devPlugins() : plugins(),
         external: (key) => key.indexOf('d3-') === 0,
         output: {
-            file: `build/${d3fcPkg.name}${shouldMinify ? '.min' : ''}.js`,
-            format: 'umd',
-            name: 'fc',
+            file: `build/${d3fcPkg.name}${shouldMinify ? '.min' : ''}.${format === 'es' ? 'mjs' : 'js'}`,
+            format,
+            ...(format === 'umd' && { name: 'fc' }),
             globals: (key) => {
                 if (key.indexOf('d3-') === 0) {
                     return 'd3';
@@ -79,5 +80,5 @@ export default commandLineArgs => {
 
             rollupWarn(warning);
         }
-    };
+    }));
 };

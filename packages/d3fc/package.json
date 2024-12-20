@@ -2,7 +2,12 @@
     "name": "d3fc",
     "version": "15.2.13",
     "description": "A collection of components that make it easy to build interactive charts with D3",
+    "type": "module",
     "main": "build/d3fc.js",
+    "exports": {
+        "import": "./build/d3fc.mjs",
+        "require": "./build/d3fc.js"
+    },
     "scripts": {
         "start": "npx rollup -c --environment BUILD:dev --watch",
         "bundle": "npx rollup -c"

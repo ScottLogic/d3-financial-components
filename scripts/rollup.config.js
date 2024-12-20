@@ -13,6 +13,8 @@ var globals = function(key) {
     }
 };
 
+const formats = ['umd', 'es'];
+
 export default commandLineArgs => {
     process.env.env = commandLineArgs.configEnv || 'dev';
     const shouldMinify = process.env.env === 'prod';
@@ -31,16 +33,18 @@ export default commandLineArgs => {
         throw Error('Expected package.json to contain `name` field');
     }
     name = name.replace('@d3fc/', '');
-    return {
+    return formats.map(format => ({
         input: 'index.js',
         plugins: plugins,
         external: external,
         output: {
-            file: `build/${name}${shouldMinify ? '.min' : ''}.js`,
-            format: 'umd',
+            file: `build/${name}${shouldMinify ? '.min' : ''}.${
+                format === 'es' ? 'mjs' : 'js'
+            }`,
+            format,
             globals: globals,
             extend: true,
-            name: 'fc'
+            ...(format === 'umd' && { name: 'fc' })
         }
-    };
+    }));
 };

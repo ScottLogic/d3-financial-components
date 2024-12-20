@@ -25,8 +25,12 @@
         "stochastic oscillator"
     ],
     "homepage": "https://github.com/d3fc/d3fc",
+    "type": "module",
     "main": "build/d3fc-technical-indicator.js",
-    "module": "index",
+    "exports": {
+        "import": "./build/d3fc-technical-indicator.mjs",
+        "require": "./build/d3fc-technical-indicator.js"
+    },
     "typings": "@d3fc/d3fc-technical-indicator.d.ts",
     "repository": {
         "type": "git",

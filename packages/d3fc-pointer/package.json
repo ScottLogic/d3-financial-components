@@ -2,8 +2,12 @@
     "name": "@d3fc/d3fc-pointer",
     "version": "3.0.3",
     "description": "Component which emits the current mouse or touch position over a selection",
+    "type": "module",
     "main": "build/d3fc-pointer.js",
-    "module": "index",
+    "exports": {
+        "import": "./build/d3fc-pointer.mjs",
+        "require": "./build/d3fc-pointer.js"
+    },
     "scripts": {
         "bundle": "npx rollup -c ../../scripts/rollup.config.js",
         "start": "npm start  --prefix ../d3fc -- --configPkg=d3fc-pointer"

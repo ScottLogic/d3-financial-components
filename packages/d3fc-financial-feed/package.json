@@ -12,8 +12,12 @@
     "gdax"
   ],
   "homepage": "https://github.com/d3fc/d3fc",
+  "type": "module",
   "main": "build/d3fc-financial-feed.js",
-  "module": "index",
+  "exports": {
+      "import": "./build/d3fc-financial-feed.mjs",
+      "require": "./build/d3fc-financial-feed.js"
+  },
   "typings": "@d3fc/d3fc-financial-feed.d.ts",
   "repository": {
     "type": "git",
